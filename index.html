@@ -1,0 +1,103 @@
+
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>사과 클릭 게임</title>
+  <style>
+    body {
+      text-align: center;
+      font-family: sans-serif;
+      background: #fff5e6;
+      padding: 30px;
+    }
+
+    h1 { color: #d94f4f; }
+
+    #apple {
+      font-size: 100px;
+      border: none;
+      background: none;
+      cursor: pointer;
+      transition: transform 0.1s;
+    }
+
+    #apple:active { transform: scale(0.85); }
+
+    #start {
+      padding: 12px 24px;
+      font-size: 18px;
+      border: none;
+      border-radius: 12px;
+      background: #ff7676;
+      color: white;
+      cursor: pointer;
+    }
+
+    .info {
+      font-size: 22px;
+      margin: 15px;
+    }
+  </style>
+</head>
+<body>
+  <h1>🍎 사과 클릭 게임 🍎</h1>
+  <p>20초 동안 사과를 최대한 많이 클릭하세요!</p>
+
+  <div class="info">점수: <span id="score">0</span></div>
+  <div class="info">남은 시간: <span id="time">20</span>초</div>
+
+  <button id="apple" disabled>🍎</button>
+  <br><br>
+  <button id="start">게임 시작!</button>
+  <p id="message">시작 버튼을 눌러 주세요!</p>
+
+  <script>
+    let score = 0;
+    let time = 20;
+    let playing = false;
+    let timer;
+
+    const apple = document.getElementById("apple");
+    const start = document.getElementById("start");
+    const scoreText = document.getElementById("score");
+    const timeText = document.getElementById("time");
+    const message = document.getElementById("message");
+
+    start.addEventListener("click", () => {
+      if (playing) return;
+
+      score = 0;
+      time = 20;
+      playing = true;
+
+      scoreText.textContent = score;
+      timeText.textContent = time;
+      message.textContent = "사과를 빠르게 클릭하세요!";
+      apple.disabled = false;
+      start.disabled = true;
+
+      timer = setInterval(() => {
+        time--;
+        timeText.textContent = time;
+
+        if (time <= 0) {
+          clearInterval(timer);
+          playing = false;
+          apple.disabled = true;
+          start.disabled = false;
+          message.textContent = `게임 종료! 최종 점수는 ${score}점입니다!`;
+          start.textContent = "다시 하기!";
+        }
+      }, 1000);
+    });
+
+    apple.addEventListener("click", () => {
+      if (!playing) return;
+      score++;
+      scoreText.textContent = score;
+    });
+  </script>
+</body>
+</html>
